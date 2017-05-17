@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Dictionary</string>
+
+    <string-array name="words">
+        <item>Agrim</item>
+        <item>Helen</item>
+        <item>Stephen</item>
+    </string-array>
+</resources>
