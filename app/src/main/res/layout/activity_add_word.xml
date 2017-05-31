@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context="org.creativethinkers.dictionary.AddWordActivity">
+
+    <EditText
+        android:id="@+id/new_word"
+        android:text=""
+        android:hint="Type New Word Here"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+    android:id="@+id/new_defn"
+    android:text=""
+    android:hint="Type New Defn Here"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+    <Button
+        android:onClick="addThisWordClick"
+        android:text="Add This Word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

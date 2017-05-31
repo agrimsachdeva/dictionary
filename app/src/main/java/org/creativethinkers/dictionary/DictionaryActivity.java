@@ -1,5 +1,7 @@
 package org.creativethinkers.dictionary;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -14,8 +16,36 @@ public class DictionaryActivity extends SimpleActivity {
     // In a later lecture, we will read the words from a file instead.
 
     // a dictionary of {word -> definition} pairs for lookup
-    private Map<String, String> dictionary;
-    private List<String> words;
+    private Map<String, String> dictionary = new HashMap<>();
+    private List<String> words = new ArrayList<>();
+    MediaPlayer mp;
+
+
+    private void readFileData() {
+        try {
+            Scanner scan = new Scanner(getResources().openRawResource(R.raw.grewords2));
+
+            while (scan.hasNextLine()) {
+                String line = scan.nextLine();
+                String[] parts = line.split("\t");
+                if (parts.length < 2) continue;
+                dictionary.put(parts[0], parts[1]);
+                words.add(parts[0]);
+            }
+
+            Scanner scan2 = new Scanner(openFileInput("added_words.txt"));
+
+            while (scan2.hasNextLine()) {
+                String line = scan.nextLine();
+                String[] parts = line.split("\t");
+                if (parts.length < 2) continue;
+                dictionary.put(parts[0], parts[1]);
+                words.add(parts[0]);
+            }
+        } catch (Exception ioe) {
+            ioe.printStackTrace();
+        }
+    }
 
     //pick the word
     //pick 5 random defns
@@ -47,24 +77,17 @@ public class DictionaryActivity extends SimpleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dictionary);
 
-        Scanner scan = new Scanner(getResources().openRawResource(R.raw.grewords2));
-
-        dictionary = new HashMap<>();
-        words = new ArrayList<>();
-
-        while (scan.hasNextLine()) {
-            String line = scan.nextLine();
-            String[] parts = line.split("\t");
-            if (parts.length < 2) continue;
-            dictionary.put(parts[0], parts[1]);
-            words.add(parts[0]);
-        }
+        readFileData();
 
         chooseWords();
 
         // put the dictionary words into an Adapter so they can be seen in ListView
 //        ListView list = (ListView) findViewById(R.id.word_list);
         ListView list = $(R.id.word_list);
+
+        mp = MediaPlayer.create(this, R.raw.jeopardy);
+        mp.start();
+
 
         // this is the code that should run when the user taps items in the list
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,6 +106,22 @@ public class DictionaryActivity extends SimpleActivity {
                 chooseWords();
             }
         });
+    }
+
+    protected void onPause() {
+        super.onPause();
+        mp.stop();
+    }
+
+    protected void onResume() {
+        super.onResume();
+        mp.start();
+    }
+
+
+    public void addAWordActivity(View view) {
+        Intent intent = new Intent(this, AddWordActivity.class);
+        startActivity(intent);
     }
 }
 
